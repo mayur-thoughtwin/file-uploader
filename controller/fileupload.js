@@ -1,70 +1,70 @@
 const {ObjectId} =require("mongodb")
 const { UserModel } = require("../ModelSchema/userModel");
 
-const setupProfile = async (req, res) => {
-    const { name, email, mobile_no, gender } = req.body;
-    const imageFile = req.files['image']?.[0].filename;
-    const csvFile = req.files['csv']?.[0].filename;
-    console.log(req.files)
-    try {
-        const newUser = new UserModel({
-            name,
-            email,
-            mobile_no,
-            gender,
-            profile: imageFile,
-            file: csvFile
-        });
-
-        await newUser.save(); 
-
-        res.status(200).json({
-            msg: "Successfully uploaded details",
-            details: newUser
-        });
-
-    } catch (error) {
-        res.status(500).json({ msg: "Internal server error" });
-    }
-};
-
-
-
-
 // const setupProfile = async (req, res) => {
 //     const { name, email, mobile_no, gender } = req.body;
 //     const imageFile = req.files['image']?.[0].filename;
 //     const csvFile = req.files['csv']?.[0].filename;
-//     const encodedimageFile = req.files['image']?.[0];  
-//         console.log(req.files)
+//     console.log(req.files)
 //     try {
-//         if(encodedimageFile){
-//             const imageBuffer = imageFile.buffer;  
-//             const imageBase64 = imageBuffer.toString('base64');  
-//             const newUser = new UserModel({
-//                 name,
-//                 email,
-//                 mobile_no,
-//                 gender,
-//                 profile: imageFile,
-//                 encoded_profile: imageBase64, 
-//                 file: csvFile
-    
-//             });
-    
-//             await newUser.save(); 
-    
-//             res.status(200).json({
-//                 msg: "Successfully uploaded details",
-//                 details: newUser
-//             });
-//         }
-       
+//         const newUser = new UserModel({
+//             name,
+//             email,
+//             mobile_no,
+//             gender,
+//             profile: imageFile,
+//             file: csvFile
+//         });
+
+//         await newUser.save(); 
+
+//         res.status(200).json({
+//             msg: "Successfully uploaded details",
+//             details: newUser
+//         });
 
 //     } catch (error) {
-//         res.status(500).json({ msg: "Internal server error" });
+//         res.status(500).json({ msg: "Internal server error",err:error.message });
 //     }
 // };
+
+
+
+
+const setupProfile = async (req, res) => {
+    const { name, email, mobile_no, gender } = req.body;
+
+    try {
+      const imageFile = req.files?.image?.[0];
+      const csvFile = req.files?.csv?.[0];
+  
+      if (!imageFile || !csvFile) {
+        return res.status(400).json({ msg: "Missing image or CSV file" });
+      }
+  
+      const imageBase64 = imageFile.buffer.toString('base64');
+  
+      const newUser = new UserModel({
+        name,
+        email,
+        mobile_no,
+        gender,
+        profile: imageFile.originalname,
+        encoded_profile: imageBase64,
+        file: csvFile.originalname
+      });
+  
+      await newUser.save();
+  
+      res.status(200).json({
+        msg: "Successfully uploaded details",
+        details: newUser
+      });
+    } catch (error) {
+      console.error("Error:", error);
+      res.status(500).json({ msg: "Internal server error", error: error.message });
+    }
+};
 
 const getAllUsers = async (req, res) => {
     const id=req.params.id
