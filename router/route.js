@@ -8,6 +8,6 @@ const router = express.Router();
 router.post("/upload_details", upload.fields([{ name: 'image', maxCount: 1 },{ name: 'csv', maxCount: 1 }]),setupProfile)
 router.get("/getalluser",getAllUsers)
 router.get("/getuserdetails/:id", getAllUsers);
-router.put("/edituserdetails",upload.none(),schema.edit_details,editUserDetails)
+router.patch("/edituserdetails",upload.none(),schema.edit_details,editUserDetails)
 router.delete("/deleteuser/:id", deleteUser); 
 module.exports = { router };

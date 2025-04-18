@@ -28,6 +28,44 @@ const setupProfile = async (req, res) => {
     }
 };
 
+
+
+
+// const setupProfile = async (req, res) => {
+//     const { name, email, mobile_no, gender } = req.body;
+//     const imageFile = req.files['image']?.[0].filename;
+//     const csvFile = req.files['csv']?.[0].filename;
+//     const encodedimageFile = req.files['image']?.[0];  
+//         console.log(req.files)
+//     try {
+//         if(encodedimageFile){
+//             const imageBuffer = imageFile.buffer;  
+//             const imageBase64 = imageBuffer.toString('base64');  
+//             const newUser = new UserModel({
+//                 name,
+//                 email,
+//                 mobile_no,
+//                 gender,
+//                 profile: imageFile,
+//                 encoded_profile: imageBase64, 
+//                 file: csvFile
+    
+//             });
+    
+//             await newUser.save(); 
+    
+//             res.status(200).json({
+//                 msg: "Successfully uploaded details",
+//                 details: newUser
+//             });
+//         }
+       
+
+//     } catch (error) {
+//         res.status(500).json({ msg: "Internal server error" });
+//     }
+// };
+
 const getAllUsers = async (req, res) => {
     const id=req.params.id
     try {
