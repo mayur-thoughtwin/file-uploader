@@ -35,6 +35,11 @@ const setupProfile = async (req, res) => {
     const { name, email, mobile_no, gender } = req.body;
 
     try {
+
+        const existingUser = await UserModel.find({ email });
+        if (existingUser) {
+            return res.status(400).json({ msg: "User already exists" });
+        }
       const imageFile = req.files?.image?.[0];
       const csvFile = req.files?.csv?.[0];
   
