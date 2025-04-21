@@ -140,14 +140,13 @@ const getUserbyId = async (req, res) => {
 };
 
 const editUserDetails = async (req, res) => {
-    const { id, name, email, mobile_no } = req.body;
+    const { id, name, mobile_no } = req.body;
     try {
         const result = await UserModel.updateOne(
             { _id: new ObjectId(id) },
             {
                 $set: {
                     name: name,
-                    email: email,
                     mobile_no: mobile_no,
                 }
             }
