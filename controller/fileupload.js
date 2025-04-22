@@ -36,7 +36,7 @@ const setupProfile = async (req, res) => {
 
     try {
 
-        const existingUser = await UserModel.find({ email });
+        const existingUser = await UserModel.findOne({ email:email });
         if (existingUser) {
             return res.status(400).json({ msg: "User already exists" });
         }
